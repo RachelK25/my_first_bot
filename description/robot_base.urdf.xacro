@@ -8,15 +8,19 @@
     <xacro:property name="chassis_length" value="0.4"/>
     <xacro:property name="chassis_width" value="0.3"/>  
     <xacro:property name="chassis_height" value="0.1"/>
-    <xacro:property name="chassis_offset_y" value="0.07"/> <!-- Offset to make sure the baselink alings with the center of the wheels -->
+    <xacro:property name="chassis_offset_y" value="0.1"/> <!-- Offset to make sure the baselink alings with the center of the wheels -->
     <xacro:property name="chassis_mass" value="4.0"/> <!-- Mass of the chassis in kg -->
 
     <xacro:property name="wheel_radius" value="0.05"/>
     <xacro:property name="wheel_width" value="0.02"/>
     <xacro:property name="wheel_offset_x" value="0.15"/>
     <xacro:property name="wheel_offset_y" value="0.08"/>
-    <xacro:property name="wheel_mass" value="0.4"/>
-    
+    <xacro:property name="wheel_mass" value="0.15"/>
+
+    <xacro:property name="caster_wheel_offset_y" value="0.12"/> <!-- Offset for the caster wheel position -->
+    <xacro:property name="caster_wheel_offset_z" value="0.03"/> <!-- Offset for the caster wheel position -->
+    <xacro:property name="caster_wheel_mass" value="0.1"/> <!-- Mass of the caster wheel in kg -->
+    <xacro:property name="caster_wheel_radius" value="0.04"/> <!-- Radius of the caster wheel -->
 
     <!-- Define colors -->
     <material name="blue">
@@ -124,6 +128,28 @@
             </geometry>
         </collision>
         <xacro:inertial_cylinder mass="${wheel_mass}" r="${wheel_radius}" l="${wheel_width}"/>
-    </link>        
+    </link>      
+
+    <!-- Caster wheel link -->
+    <joint name="caster_wheel_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="caster_wheel"/>
+        <origin xyz="0 ${caster_wheel_offset_y} ${-chassis_height/2}" rpy="0 0 0"/> <!-- Position the caster wheel at the back of the chassis -->
+    </joint>
+
+    <link name="caster_wheel">
+        <visual>
+            <geometry>
+                <sphere radius="${caster_wheel_radius}"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <collision>
+            <geometry>
+                <sphere radius="${caster_wheel_radius}"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_sphere mass="${caster_wheel_mass}" r="${caster_wheel_radius}"/>
+    </link>
 
 </robot>
