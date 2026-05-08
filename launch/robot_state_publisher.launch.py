@@ -15,6 +15,13 @@ def generate_launch_description():
 
     # Launch a robot_state_publisher node with the processed URDF
     return LaunchDescription([
+        # Publish the joint states of the robot to determine the current position of robot's moving joints
+        Node(
+            package="joint_state_publisher",
+            executable="joint_state_publisher",
+            name="joint_state_publisher",
+        ),
+        # Publish the robot's state to the rest of the ROS system, including the transforms between the robot's links
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
