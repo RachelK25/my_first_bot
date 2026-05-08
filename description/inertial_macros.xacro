@@ -6,13 +6,23 @@
     <!-- Formulas for inertia tensors can be found here https://en.wikipedia.org/wiki/List_of_moments_of_inertia -->
 
     <!-- Macro for defining inertial properties of a box -->
-    <xacro:macro name="inertial_box" params="mass l w h origin_xyz='0 0 0' origin_rpy='0 0 0'">
+    <xacro:macro name="inertial_box" params="mass w l h origin_xyz='0 0 0' origin_rpy='0 0 0'">
         <inertial>
             <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
             <mass value="${mass}"/>
-            <inertia ixx="${(1/12) * mass * (w*w + h*h)}" ixy="0.0" ixz="0.0"
-                     iyy="${(1/12) * mass * (l*l + h*h)}" iyz="0.0"
-                     izz="${(1/12) * mass * (l*l + w*w)}"/>
+            <inertia ixx="${(1/12) * mass * (l*l + h*h)}" ixy="0.0" ixz="0.0"
+                     iyy="${(1/12) * mass * (w*w + h*h)}" iyz="0.0"
+                     izz="${(1/12) * mass * (w*w + l*l)}"/>
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="inertial_cylinder" params="mass r l origin_xyz='0 0 0' origin_rpy='0 0 0'">
+        <inertial>
+            <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+            <mass value="${mass}"/>
+            <inertia ixx="${(1/12) * mass * (3*r*r + l*l)}" ixy="0.0" ixz="0.0"
+                     iyy="${(1/12) * mass * (3*r*r + l*l)}" iyz="0.0"
+                     izz="${(1/2) * mass * r*r}"/>
         </inertial>
     </xacro:macro>
 
