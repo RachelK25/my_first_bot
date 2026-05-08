@@ -11,3 +11,22 @@ This package provides a minimal setup for a caster wheel robot, intended as a st
 ## Launch files
 
 The robot state publisher can be launched by executing 'ros2 launch my_first_bot robot_state_publisher.launch.xml' (C++ version) or 'ros2 launch my_first_bot robot_state_publisher.launch.py (Python version). Note that both codes do the exact same, just written in another language.
+
+## Robot Description
+
+The basic robot structure is defined in:
+
+*description/robot_base.urdf.xacro*
+
+This file specifies all robot components such as the chassis, drive wheels, and caster wheel.
+Each link of the robot contains three important elements:
+
+- *Visual* – defines how the robot looks in visualization tools.
+- *Collision* – defines the physical shape used for collision detection during simulation.
+- *Inertial* – defines the mass and inertia properties required for realistic physics simulation.
+
+The inertia calculations are implemented in a separate xacro file located in:
+
+*description/macros_inertia.xacro*
+
+These macros provide predefined inertia formulas for common geometric shapes.
