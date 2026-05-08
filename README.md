@@ -12,6 +12,8 @@ This package provides a minimal setup for a caster wheel robot, intended as a st
 
 The robot state publisher can be launched by executing 'ros2 launch my_first_bot robot_state_publisher.launch.xml' (C++ version) or 'ros2 launch my_first_bot robot_state_publisher.launch.py (Python version). Note that both codes do the exact same, just written in another language.
 
+The robot model will then be available for visualization in RViz2.
+
 ## Robot Description
 
 The basic robot structure is defined in: *description/robot_base.urdf.xacro*
@@ -26,3 +28,10 @@ Each link of the robot contains three important elements:
 The inertia calculations are implemented in a separate xacro file located in: *description/macros_inertia.xacro*
 
 These macros provide predefined inertia formulas for common geometric shapes.
+
+## Nodes
+
+This package currently uses two nodes:
+
+- **robot_state_publisher** - Publishes the robot transforms (tf) based on the URDF model.
+- **joint_state_publisher** - Publishes joint states for the robot and allows movable joints to be visualized correctly.
