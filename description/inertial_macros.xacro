@@ -16,6 +16,7 @@
         </inertial>
     </xacro:macro>
 
+    <!-- Macro for defining inertial properties of a cylinder -->
     <xacro:macro name="inertial_cylinder" params="mass r l origin_xyz='0 0 0' origin_rpy='0 0 0'">
         <inertial>
             <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
@@ -23,6 +24,17 @@
             <inertia ixx="${(1/12) * mass * (3*r*r + l*l)}" ixy="0.0" ixz="0.0"
                      iyy="${(1/12) * mass * (3*r*r + l*l)}" iyz="0.0"
                      izz="${(1/2) * mass * r*r}"/>
+        </inertial>
+    </xacro:macro>
+
+    <!-- Macro for defining inertial properties of a sphere -->
+    <xacro:macro name="inertial_sphere" params="mass r origin_xyz='0 0 0' origin_rpy='0 0 0'">
+        <inertial>
+            <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+            <mass value="${mass}"/>
+            <inertia ixx="${(2/5) * mass * r*r}" ixy="0.0" ixz="0.0"
+                     iyy="${(2/5) * mass * r*r}" iyz="0.0"
+                     izz="${(2/5) * mass * r*r}"/>
         </inertial>
     </xacro:macro>
 
