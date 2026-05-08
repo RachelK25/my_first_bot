@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Create macros to define inertial properties -->
+    <!-- The macros can be used to calculate inertial properties for boxes, cylinders and spheres -->
+    <!-- Formulas for inertia tensors can be found here https://en.wikipedia.org/wiki/List_of_moments_of_inertia -->
+
+    <!-- Macro for defining inertial properties of a box -->
+    <xacro:macro name="inertial_box" params="mass l w h origin_xyz='0 0 0' origin_rpy='0 0 0'">
+        <inertial>
+            <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+            <mass value="${mass}"/>
+            <inertia ixx="${(1/12) * mass * (w*w + h*h)}" ixy="0.0" ixz="0.0"
+                     iyy="${(1/12) * mass * (l*l + h*h)}" iyz="0.0"
+                     izz="${(1/12) * mass * (l*l + w*w)}"/>
+        </inertial>
+    </xacro:macro>
+
+</robot>
+
