@@ -31,7 +31,11 @@ These macros provide predefined inertia formulas for common geometric shapes.
 
 ## Nodes
 
-This package currently uses two nodes:
+This package uses two nodes:
 
 - **robot_state_publisher** - Publishes the robot transforms (tf) based on the URDF model.
 - **joint_state_publisher** - Publishes joint states for the robot and allows movable joints to be visualized correctly.
+
+## Gazebo
+
+This version does not spawn the robot into Gazebo automatically. The robot is therefore not visible upon opening Gazebo.
