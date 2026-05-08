@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot_base">
 
+    <!-- Include macros for inertial calculations -->
+    <xacro:include filename="inertial_macros.xacro"/>
+
+    <!-- Define parameters -->
+    <xacro:property name="chassis_width" value="0.4"/>
+    <xacro:property name="chassis_length" value="0.3"/>
+    <xacro:property name="chassis_height" value="0.1"/>
+    <xacro:property name="chassis_offset_z" value="0.05"/> <!-- The height of the chassis center above the base footprint -->
+    <xacro:property name="chassis_mass" value="4.0"/> <!-- Mass of the chassis in kg -->
+
+
     <!-- Define colors -->
     <material name="blue">
         <color rgba="0 0 1 1"/>
@@ -40,21 +51,28 @@
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
         <child link="chassis"/>
-        <origin xyz="0 0 0.1" rpy="0 0 0"/> <!--The center of the chassis is 0.1m above the base footprint-->
+        <origin xyz="0 0 ${chassis_offset_z}" rpy="0 0 0"/> <!--The center of the chassis is 0.1m above the base footprint-->
     </joint>
 
     <link name="chassis">
         <visual>
             <geometry>
-                <box size="0.4 0.3 0.1"/> <!-- Length, width, height -->
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/> <!-- Length, width, height -->
             </geometry>
             <material name="gray"/>
         </visual>
         <collision>
             <geometry>
-                <box size="0.4 0.3 0.1"/>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
             </geometry>
         </collision>
+        <xacro:inertial_box mass="${chassis_mass}" l="${chassis_length}" w="${chassis_width}" h="${chassis_height}"/>
     </link>
+
+    <gazebo reference="gray">
+        <material>Gazebo/Gray</material>
+    </gazebo>
+
+    
 
 </robot>
