@@ -5,12 +5,18 @@
     <xacro:include filename="inertial_macros.xacro"/>
 
     <!-- Define parameters -->
-    <xacro:property name="chassis_width" value="0.4"/>
-    <xacro:property name="chassis_length" value="0.3"/>
+    <xacro:property name="chassis_length" value="0.4"/>
+    <xacro:property name="chassis_width" value="0.3"/>  
     <xacro:property name="chassis_height" value="0.1"/>
-    <xacro:property name="chassis_offset_z" value="0.05"/> <!-- The height of the chassis center above the base footprint -->
+    <xacro:property name="chassis_offset_y" value="0.07"/> <!-- Offset to make sure the baselink alings with the center of the wheels -->
     <xacro:property name="chassis_mass" value="4.0"/> <!-- Mass of the chassis in kg -->
 
+    <xacro:property name="wheel_radius" value="0.05"/>
+    <xacro:property name="wheel_width" value="0.02"/>
+    <xacro:property name="wheel_offset_x" value="0.15"/>
+    <xacro:property name="wheel_offset_y" value="0.08"/>
+    <xacro:property name="wheel_mass" value="0.4"/>
+    
 
     <!-- Define colors -->
     <material name="blue">
@@ -51,28 +57,73 @@
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
         <child link="chassis"/>
-        <origin xyz="0 0 ${chassis_offset_z}" rpy="0 0 0"/> <!--The center of the chassis is 0.1m above the base footprint-->
+        <origin xyz="0 ${chassis_offset_y} ${wheel_radius}" rpy="0 0 0"/> <!-- Position the chassis above the base footprint -->
     </joint>
 
     <link name="chassis">
         <visual>
             <geometry>
-                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/> <!-- Length, width, height -->
+                <box size="${chassis_width} ${chassis_length} ${chassis_height}"/> <!-- Length, width, height -->
             </geometry>
             <material name="gray"/>
         </visual>
         <collision>
             <geometry>
-                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+                <box size="${chassis_width} ${chassis_length} ${chassis_height}"/>
             </geometry>
         </collision>
-        <xacro:inertial_box mass="${chassis_mass}" l="${chassis_length}" w="${chassis_width}" h="${chassis_height}"/>
+        <xacro:inertial_box mass="${chassis_mass}" w="${chassis_width}" l="${chassis_length}" h="${chassis_height}"/>
     </link>
 
     <gazebo reference="gray">
         <material>Gazebo/Gray</material>
     </gazebo>
 
-    
+
+    <!-- Left wheel link -->
+    <joint name="left_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="left_wheel"/>
+        <origin xyz="${-(chassis_width/2+wheel_width/2)} 0 0" rpy="0 ${-pi/2} 0"/> <!-- Position the left wheel at the left side of the chassis -->
+        <axis xyz="0 0 1"/> <!-- Rotate around the z-axis for a differential drive robot -->
+    </joint>    
+
+    <link name="left_wheel">
+        <visual>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="${wheel_mass}" r="${wheel_radius}" l="${wheel_width}"/>
+    </link>
+         
+    <!-- Right wheel link -->
+    <joint name="right_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="right_wheel"/>
+        <origin xyz="${(chassis_width/2+wheel_width/2)} 0 0" rpy="0 ${pi/2} 0"/> <!-- Position the right wheel at the right side of the chassis -->
+        <axis xyz="0 0 -1"/> <!-- Rotate around the z-axis for a differential drive robot -->
+    </joint>    
+
+    <link name="right_wheel">
+        <visual>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="${wheel_mass}" r="${wheel_radius}" l="${wheel_width}"/>
+    </link>        
 
 </robot>
