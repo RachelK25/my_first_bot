@@ -24,7 +24,7 @@ if(BUILD_TESTING)
 endif()
 
 # Install launch files. (Add description to DIRECTORY)
-install(DIRECTORY launch
+install(DIRECTORY description launch
   DESTINATION share/${PROJECT_NAME}/
 )
 
