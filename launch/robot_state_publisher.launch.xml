@@ -14,4 +14,7 @@
     <param name="robot_description" value="$(command 'xacro $(var model)')" />
   </node>
 
+  <!-- Spawn Entity in Gazebo -->
+  <node pkg="ros_gz_sim" exec="create" args="-topic robot_description -name my_first_bot -z 0.1" output="screen"/>
+    
 </launch>

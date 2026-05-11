@@ -11,7 +11,6 @@ def generate_launch_description():
     xacro_file = os.path.join(pkg_path, 'description', 'robot.urdf.xacro') # Get the path to the xacro file
     robot_description = Command(['xacro ', xacro_file]) # Process the xacro file to get the robot description as a string
 
-
     # Launch a robot_state_publisher node with the processed URDF
     return LaunchDescription([
         # Publish the joint states of the robot to determine the current position of robot's moving joints
@@ -25,6 +24,12 @@ def generate_launch_description():
             package='robot_state_publisher',
             executable='robot_state_publisher',
             name='robot_state_publisher',
-            parameters=[{'robot_description': robot_description}]
-        )
+            parameters=[{'robot_description': robot_description}] # Create a topic that contains the robot description 
+        ),
+        # Spawn the robot in Gazebo using the robot description topic
+        Node(
+            package='ros_gz_sim', 
+            executable='create', 
+            arguments=['-topic', 'robot_description', '-name', 'my_first_bot','-z', '0.1'], # Create a node that spawns the robot in Gazebo using the robot description topic
+            output='screen')
     ])
