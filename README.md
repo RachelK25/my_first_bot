@@ -2,40 +2,79 @@
 
 This package provides a minimal setup for a caster wheel robot, intended as a starting point for further development and customization.
 
+---
+
 ## Compatibility
 
-**Operating System:** Noble \
+**Operating System:** Ubuntu 24.04 Noble \
 **ROS2 version:** Jazzy \
-**SDFormat:** 1.10
+**SDFormat:** 1.10 \
+**Gazebo Version:** Harmonic
+
+---
 
 ## Launch files
 
-The robot state publisher can be launched by executing 'ros2 launch my_first_bot robot_state_publisher.launch.xml' (C++ version) or 'ros2 launch my_first_bot robot_state_publisher.launch.py (Python version). Note that both codes do the exact same, just written in another language.
+In case of performing Gazebo simulations, start Gazebo first:
 
-The robot model will then be available for visualization in RViz2.
+```bash
+ros2 launch ros_gz_sim gz_sim.launch.py
+```
+
+Then launch the robot:
+
+```bash
+ros2 launch my_first_bot robot_state_publisher.launch.py
+```
+
+or:
+
+```bash
+ros2 launch my_first_bot robot_state_publisher.launch.xml
+```
+
+Both launch files perform the same actions but are written in different formats (Python and XML).
+
+The robot model will then be available in Gazebo and can also be visualized in RViz2.
+
+---
 
 ## Robot Description
 
-The basic robot structure is defined in: *description/robot_base.urdf.xacro*
+The basic robot structure is defined in:
 
-This file specifies all robot components such as the chassis, drive wheels, and caster wheel.
-Each link of the robot contains three important elements:
+```text
+description/robot_base.urdf.xacro
+```
 
-- **Visual** – defines how the robot looks in visualization tools.
-- **Collision** – defines the physical shape used for collision detection during simulation.
-- **Inertial** – defines the mass and inertia properties required for realistic physics simulation.
+This file specifies all robot components such as:
 
-The inertia calculations are implemented in a separate xacro file located in: *description/macros_inertia.xacro*
+- the chassis
+- drive wheels
+- caster wheel
+
+Each robot link contains three important elements:
+
+- **Visual** — defines how the robot appears in visualization tools.
+- **Collision** — defines the physical geometry used for collision detection during simulation.
+- **Inertial** — defines the mass and inertia properties required for realistic physics simulation.
+
+The inertia calculations are implemented in:
+
+```text
+description/macros_inertia.xacro
+```
 
 These macros provide predefined inertia formulas for common geometric shapes.
 
+---
+
 ## Nodes
 
-This package uses two nodes:
+The robot launch file starts three ROS 2 nodes:
 
-- **robot_state_publisher** - Publishes the robot transforms (tf) based on the URDF model.
-- **joint_state_publisher** - Publishes joint states for the robot and allows movable joints to be visualized correctly.
+- **robot_state_publisher** — publishes the robot transforms (`tf`) based on the URDF model.
+- **joint_state_publisher** — publishes joint states so movable joints can be visualized correctly.
+- **ros_gz_sim/create** — reads the robot description and spawns the robot into Gazebo.
 
-## Gazebo
-
-This version does not spawn the robot into Gazebo automatically. The robot is therefore not visible upon opening Gazebo.
+These nodes are automatically started when launching the robot.
